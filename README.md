@@ -107,6 +107,38 @@ class LimitToolCalls(Callback):
 
 See [`AgentCancel`](src/tinyagent/agent.py) for cancellation that preserves the trace.
 
+## Evaluate
+
+`tinyagent` ships two evaluators in `tinyagent.evaluation` for grading agent runs against criteria.
+
+`LlmJudge` answers a question about a fixed context with a single LLM call:
+
+```python
+from tinyagent.evaluation import LlmJudge
+
+judge = LlmJudge(model_id="mistral:mistral-small-latest")
+result = judge.run(
+    context=trace.final_output,
+    question="Does the answer cite a primary source?",
+)
+print(result.passed, result.reasoning)
+```
+
+`AgentJudge` runs an agent that has tools to inspect the full `AgentTrace` (token counts, spans, tool calls), so it can answer richer questions:
+
+```python
+from tinyagent.evaluation import AgentJudge
+
+judge = AgentJudge(model_id="mistral:mistral-small-latest")
+eval_trace = judge.run(
+    trace=trace,
+    question="Did the agent use the search_web tool before answering?",
+)
+print(eval_trace.final_output)
+```
+
+For deterministic checks (token budget, span shape, expected tool sequence) you can also walk the `AgentTrace` directly without an LLM. See [docs/evaluation.md](docs/evaluation.md) for the full guide and tradeoffs.
+
 ## Serve as a service
 
 ```python
