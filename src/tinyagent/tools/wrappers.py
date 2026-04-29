@@ -4,7 +4,7 @@ from collections.abc import Callable, Sequence
 from functools import wraps
 from typing import Any, TypeVar
 
-from tinyagent.config import MCPParams, Tool
+from tinyagent.config import MCPParams
 from tinyagent.tools.mcp import MCPClient
 
 
@@ -70,7 +70,7 @@ async def _wrap_tools(
             callable_tools = await mcp_client.list_tools()
 
             for callable_tool in callable_tools:
-                wrapped_tools.append(_wrap_no_exception(callable_tool))  # type: ignore[arg-type]
+                wrapped_tools.append(_wrap_no_exception(callable_tool))
 
             mcp_clients.append(mcp_client)
         elif callable(tool):

@@ -25,7 +25,9 @@ try:
 except ImportError:
 
     def _raise(*args, **kwargs):  # type: ignore[no-untyped-def]
-        msg = "You need to `pip install 'mozilla-ai-tinyagent[a2a]'` to use this method."
+        msg = (
+            "You need to `pip install 'mozilla-ai-tinyagent[a2a]'` to use this method."
+        )
         raise ImportError(msg)
 
     A2AServingConfig = _raise  # type: ignore[assignment,misc]

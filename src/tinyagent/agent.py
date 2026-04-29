@@ -13,10 +13,6 @@ from opentelemetry import trace as otel_trace
 
 from tinyagent.callbacks.context import Context
 from tinyagent.callbacks.wrapper import _TinyAgentWrapper
-from tinyagent.config import (
-    AgentConfig,
-    Tool,
-)
 from tinyagent.logging import logger
 from tinyagent.tools.wrappers import _wrap_tools
 from tinyagent.tracing.agent_trace import AgentTrace
@@ -31,6 +27,7 @@ if TYPE_CHECKING:
     from opentelemetry.trace import Tracer
     from pydantic import BaseModel
 
+    from tinyagent.config import AgentConfig, Tool
     from tinyagent.serving import A2AServingConfig, MCPServingConfig, ServerHandle
     from tinyagent.tools.mcp.mcp_client import MCPClient
 

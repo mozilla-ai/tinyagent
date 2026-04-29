@@ -27,13 +27,17 @@ DOCS_DIR = pathlib.Path("docs")
 )
 def test_files_all(fpath: pathlib.Path) -> None:
     if fpath.name == "serving.md":
-        pytest.skip("serving.md spawns subprocess servers; not supported by docs tester")
+        pytest.skip(
+            "serving.md spawns subprocess servers; not supported by docs tester"
+        )
 
     if fpath.name == "tools.md":
         try:
-            import composio  # noqa: F401
+            import composio
         except ImportError:
-            pytest.skip("tools.md has a composio code block; install the [composio] extra")
+            pytest.skip(
+                "tools.md has a composio code block; install the [composio] extra"
+            )
 
     mock_agent = MagicMock()
     mock_create = MagicMock(return_value=mock_agent)
@@ -47,7 +51,7 @@ def test_files_all(fpath: pathlib.Path) -> None:
         patch("tinyagent.tools.a2a_tool_async", mock_a2a_tool),
     ]
     try:
-        import composio  # noqa: F401
+        import composio
     except ImportError:
         pass
     else:

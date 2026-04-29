@@ -26,7 +26,7 @@ from tinyagent.tracing.attributes import GenAI
 
 def _uvx_installed() -> bool:
     try:
-        subprocess.run(  # noqa: S603
+        subprocess.run(
             ["uvx", "--version"],  # noqa: S607
             capture_output=True,
             check=True,

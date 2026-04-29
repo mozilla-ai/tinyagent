@@ -41,7 +41,7 @@ from tinyagent.tracing.otel_types import Resource, SpanContext, SpanKind, Status
 from .conftest import get_client_from_agent_card_url
 
 if TYPE_CHECKING:
-    from typing import Any  # noqa: F401
+    from typing import Any
 
 
 class UserInfo(BaseModel):
@@ -51,9 +51,7 @@ class UserInfo(BaseModel):
 
 
 FIRST_TURN_PROMPT = "My name is Alice and I work as a software engineer."
-FIRST_TURN_RESPONSE = (
-    "Hello, Alice! It's nice to meet you. You work as a software engineer. How old are you?"
-)
+FIRST_TURN_RESPONSE = "Hello, Alice! It's nice to meet you. You work as a software engineer. How old are you?"
 SECOND_TURN_PROMPT = (
     "What's my name, what do I do for work, and what's my age? "
     "Let me know if you need more information."
@@ -76,7 +74,7 @@ class MockConversationAgent(TinyAgent):
     async def _load_agent(self) -> None:
         await super()._load_agent()
 
-    async def run_async(  # type: ignore[override]
+    async def run_async(
         self, prompt: str | list[dict[str, Any]], instrument: bool = True, **kwargs: Any
     ) -> AgentTrace:
         assert isinstance(prompt, str)
@@ -90,7 +88,9 @@ class MockConversationAgent(TinyAgent):
                 task_status=TaskState.completed,
                 data=UserInfo(name="Alice", job="software engineer", age=None),
             )
-            return self._create_mock_trace(envelope, FIRST_TURN_RESPONSE, FIRST_TURN_PROMPT)
+            return self._create_mock_trace(
+                envelope, FIRST_TURN_RESPONSE, FIRST_TURN_PROMPT
+            )
 
         if self.turn_count == 1:
             assert prompt.count(FIRST_TURN_PROMPT) == 1
@@ -188,7 +188,9 @@ async def test_a2a_tool_multiturn() -> None:
                 id=str(uuid4()),
                 params=MessageSendParams(**send_message_payload_1),  # type: ignore[arg-type]
             )
-            response_1 = await client.send_message(request_1, http_kwargs=DEFAULT_HTTP_KWARGS)
+            response_1 = await client.send_message(
+                request_1, http_kwargs=DEFAULT_HTTP_KWARGS
+            )
 
             assert response_1 is not None
             if hasattr(response_1.root, "error"):
@@ -213,7 +215,9 @@ async def test_a2a_tool_multiturn() -> None:
                 id=str(uuid4()),
                 params=MessageSendParams(**send_message_payload_2),  # type: ignore[arg-type]
             )
-            response_2 = await client.send_message(request_2, http_kwargs=DEFAULT_HTTP_KWARGS)
+            response_2 = await client.send_message(
+                request_2, http_kwargs=DEFAULT_HTTP_KWARGS
+            )
 
             assert response_2 is not None
             if hasattr(response_2.root, "error"):
@@ -240,7 +244,9 @@ async def test_a2a_tool_multiturn() -> None:
                 id=str(uuid4()),
                 params=MessageSendParams(**send_message_payload_3),  # type: ignore[arg-type]
             )
-            response_3 = await client.send_message(request_3, http_kwargs=DEFAULT_HTTP_KWARGS)
+            response_3 = await client.send_message(
+                request_3, http_kwargs=DEFAULT_HTTP_KWARGS
+            )
             assert response_3 is not None
             if hasattr(response_3.root, "error"):
                 msg = f"Error: {response_3.root.error.message}"

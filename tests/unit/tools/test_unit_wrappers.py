@@ -57,4 +57,4 @@ def test_wrap_tool_passes_through_callables() -> None:
 
 def test_wrap_tool_invalid_type_raises() -> None:
     with pytest.raises(ValueError, match="MCPStdio"):
-        asyncio.run(_wrap_tools([42]))  # type: ignore[list-item]
+        asyncio.run(_wrap_tools([42]))

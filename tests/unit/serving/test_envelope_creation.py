@@ -70,7 +70,9 @@ async def test_envelope_created_without_output_type() -> None:
 async def test_envelope_created_with_output_type() -> None:
     """Test that the envelope is correctly created when an agent is configured with an output_type."""
     config = AgentConfig(
-        model_id="mistral:test-model", description="test agent", output_type=CustomOutputType
+        model_id="mistral:test-model",
+        description="test agent",
+        output_type=CustomOutputType,
     )
 
     agent = MockAgent(config)

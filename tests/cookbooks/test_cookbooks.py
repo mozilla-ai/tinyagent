@@ -32,7 +32,11 @@ def test_cookbook_notebook(
     notebook_path: pathlib.Path, capsys: pytest.CaptureFixture[str]
 ) -> None:
     """Execute a cookbook notebook and surface failures."""
-    env = {k: os.environ[k] for k in os.environ if k.endswith("_API_KEY") or k in ("HF_TOKEN", "HF_ENDPOINT", "PATH")}
+    env = {
+        k: os.environ[k]
+        for k in os.environ
+        if k.endswith("_API_KEY") or k in ("HF_TOKEN", "HF_ENDPOINT", "PATH")
+    }
     env["IN_PYTEST"] = "1"
 
     try:

@@ -62,13 +62,15 @@ def test_subclass_preserves_message() -> None:
 
 
 def test_subclass_is_catchable_as_agent_cancel() -> None:
+    msg = "test"
     with pytest.raises(AgentCancel):
-        raise StopAgent("test")
+        raise StopAgent(msg)
 
 
 def test_subclass_is_catchable_as_specific_type() -> None:
+    msg = "test"
     with pytest.raises(StopAgent, match="test"):
-        raise StopAgent("test")
+        raise StopAgent(msg)
 
 
 def test_trace_can_be_assigned() -> None:
@@ -83,8 +85,9 @@ def test_deep_inheritance_works() -> None:
     assert isinstance(exc, AgentCancel)
     assert isinstance(exc, StopAgent)
 
+    msg = "test"
     with pytest.raises(AgentCancel):
-        raise SpecificStopAgent("test")
+        raise SpecificStopAgent(msg)
 
 
 def test_multiple_args_preserved() -> None:

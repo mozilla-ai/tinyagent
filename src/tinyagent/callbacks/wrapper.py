@@ -15,8 +15,10 @@ if TYPE_CHECKING:
 
 
 class _TinyAgentWrapper:
-    """Wrap the agent's `call_model` and per-tool `call_tool` methods so that
-    user-supplied callbacks fire before/after each LLM call and tool execution.
+    """Wrap `call_model` and per-tool `call_tool` for callback dispatch.
+
+    User-supplied callbacks fire before/after each LLM call and tool
+    execution.
     """
 
     def __init__(self) -> None:

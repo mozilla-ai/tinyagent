@@ -62,7 +62,7 @@ class MockConversationAgent(TinyAgent):
     async def _load_agent(self) -> None:
         await super()._load_agent()
 
-    async def run_async(  # type: ignore[override]
+    async def run_async(
         self, prompt: str | list[dict[str, Any]], instrument: bool = True, **kwargs: Any
     ) -> AgentTrace:
         envelope = self.output_type(
@@ -150,9 +150,7 @@ async def test_push_notification_non_streaming() -> None:
             params = MessageSendParams(
                 message=Message(
                     role=Role.user,
-                    parts=[
-                        Part(root=TextPart(kind="text", text=FIRST_TURN_PROMPT))
-                    ],
+                    parts=[Part(root=TextPart(kind="text", text=FIRST_TURN_PROMPT))],
                     message_id=first_message_id,
                 ),
                 configuration=MessageSendConfiguration(
