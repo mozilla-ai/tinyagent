@@ -1,0 +1,48 @@
+name: Cookbook Tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'docs/cookbook/**'
+      - '.github/workflows/**'
+      - 'pyproject.toml'
+  workflow_dispatch:
+
+jobs:
+  run-cookbook-tests:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: 3.13
+          activate-environment: true
+
+      - run: uv sync -U --group tests --extra all
+
+      - name: Install jupyter (for `jupyter execute`)
+        run: uv pip install jupyter
+
+      - name: Run Cookbook Tests
+        env:
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+        run: pytest tests/cookbooks -v -n 4 --cov --cov-report=xml
+
+      - name: Upload finished cookbooks
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          path: "docs/cookbook/executed_*.ipynb"
+
+      - name: Upload coverage reports to Codecov
+        if: always()
+        uses: codecov/codecov-action@v6
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

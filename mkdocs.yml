@@ -1,0 +1,49 @@
+site_name: tinyagent
+site_description: A minimal agent framework with first-class tracing, callbacks, MCP, and serving.
+site_url: https://docs.mozilla.ai/tinyagent/
+repo_url: https://github.com/mozilla-ai/tinyagent
+repo_name: mozilla-ai/tinyagent
+
+docs_dir: docs
+
+nav:
+  - Home: index.md
+  - Guides:
+      - Models: models.md
+      - Tools: tools.md
+      - Callbacks: callbacks.md
+      - Tracing: tracing.md
+      - Serving: serving.md
+      - Evaluation: evaluation.md
+  - Cookbook:
+      - Your first agent: cookbook/your-first-agent.md
+      - Evaluating an agent: cookbook/your-first-agent-evaluation.md
+      - MCP agent: cookbook/mcp-agent.md
+      - Callbacks: cookbook/callbacks.md
+      - Serve over A2A: cookbook/serve-a2a.md
+      - Local LLM: cookbook/agent-with-local-llm.md
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+  features:
+    - content.code.copy
+    - navigation.sections
+    - navigation.top
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.details
+  - toc:
+      permalink: true

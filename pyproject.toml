@@ -1,0 +1,173 @@
+[build-system]
+requires = ["setuptools>=48", "setuptools_scm[toml]>=6.3.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mozilla-ai-tinyagent"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.11,<3.14"
+dynamic = ["version"]
+description = "A minimal agent framework with first-class tracing, callbacks, MCP, and serving support."
+dependencies = [
+  "any-llm-sdk>=1.0,<2",
+  "mcp>=1.5.0",
+  "opentelemetry-sdk",
+  "pydantic",
+  "requests",
+  "rich",
+  "tavily-python",
+]
+
+[project.optional-dependencies]
+a2a = [
+  "a2a-sdk>=0.3.0,<1.0.0",
+  "httpx",
+]
+
+composio = [
+  "composio>=0.8.14",
+]
+
+all = [
+  "mozilla-ai-tinyagent[a2a,composio]",
+]
+
+[project.urls]
+Documentation = "https://docs.mozilla.ai/tinyagent/"
+Issues = "https://github.com/mozilla-ai/tinyagent/issues"
+Source = "https://github.com/mozilla-ai/tinyagent"
+
+[tool.setuptools.package-data]
+"*" = ["py.typed"]
+
+[tool.setuptools.packages.find]
+exclude = ["tests", "tests.*"]
+where = ["src"]
+namespaces = false
+
+[tool.setuptools_scm]
+
+
+[tool.pylint.messages_control]
+disable = [
+    "import-outside-toplevel",
+]
+
+[tool.ruff.lint]
+ignore = [
+  "TD",
+  "FIX",
+  "D100",
+  "D104",
+  "D203",
+  "D213",
+  "FBT",
+  "COM",
+  "ANN",
+  "ARG",
+  "S101",
+  "E501",
+  "INP001",
+  "PERF",
+  "PLR",
+  "SIM",
+  "PTH",
+  "DTZ005",
+  "BLE001",
+  "TRY004",
+  "S113",
+  "PLW2901",
+  "C901",
+  "ERA001",
+  "SLF001",
+  "PLC0415",
+  "PLR0912",
+  "PLR0913",
+  "N999",
+  "B024",
+]
+extend-select = ["ALL"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/tinyagent/config.py" = ["D101", "D102"]
+"src/tinyagent/evaluation/*" = ["D101", "D103", "D107"]
+"src/tinyagent/callbacks/*" = ["D102"]
+"src/tinyagent/agent.py" = ["D107", "D102"]
+"src/tinyagent/serving/a2a/agent_executor.py" = ["E402", "D102"]
+"src/tinyagent/serving/a2a/agent_card.py" = ["UP045"]
+"src/tinyagent/tools/mcp/*" = ["D101"]
+"src/tinyagent/tools/a2a.py" = ["UP045"]
+"tests/**" = ["D", "F401", "I001"]
+"*.ipynb" = ["T201"]
+"scripts/**" = ["D", "T201"]
+
+[tool.mypy]
+strict = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+follow_untyped_imports = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_decorators = false
+
+[[tool.mypy.overrides]]
+module = ["pytest", "mktestdocs", "pytest_lazy_fixtures", "syrupy.assertion"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+timeout = 180
+reruns = 5
+reruns_delay = 10
+
+[tool.coverage.run]
+branch = true
+omit = [
+  "tests/"
+]
+
+[dependency-groups]
+dev = [
+  { include-group = "docs" },
+  { include-group = "lint" },
+  { include-group = "tests" },
+]
+
+docs = [
+  "httpx",
+  "mkdocs",
+]
+
+lint = [
+  "pre-commit==4.5.1",
+  "pre-commit-uv==4.2.1",
+  "mypy",
+  "types-requests",
+  "types-pyyaml",
+]
+
+tests = [
+  "pytest>=8,<10",
+  "pytest-cov>=6.2.1,<8",
+  "pytest-sugar>=0.9.6",
+  "pytest-asyncio>=0.26.0",
+  "pytest-lazy-fixtures>=1.1.2",
+  "pytest-rerunfailures>=16.0",
+  "pytest-timeout>=2.4.0",
+  "pytest-xdist>=3.6.1",
+  "debugpy>=1.8.13",
+  "mktestdocs>=0.2.4",
+  "syrupy>=4.9.1",
+  "any-llm-sdk[anthropic,gemini,huggingface,mistral,xai]>=1.0,<2",
+  "opentelemetry-exporter-otlp-proto-http",
+]
+
+all = [
+  { include-group = "dev" },
+  { include-group = "docs" },
+  { include-group = "lint" },
+  { include-group = "tests" },
+]

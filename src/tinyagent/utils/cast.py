@@ -1,0 +1,109 @@
+import json
+import types
+from typing import Any, Union, get_args, get_origin
+
+from tinyagent.logging import logger
+
+
+def _is_optional_type(arg_type: Any) -> bool:
+    """Check if a type is optional (contains None as a union member)."""
+    if isinstance(arg_type, types.UnionType):
+        union_args = get_args(arg_type)
+        return type(None) in union_args
+
+    if get_origin(arg_type) is Union:
+        union_args = get_args(arg_type)
+        return type(None) in union_args
+
+    return False
+
+
+def safe_cast_argument(value: Any, arg_type: Any) -> Any:
+    """Safely cast an argument to the specified type, handling union types.
+
+    Args:
+        value: The value to cast
+        arg_type: The target type (may be a union type)
+
+    Returns:
+        The cast value, or the original value if casting fails
+
+    """
+    if value is None:
+        return None
+
+    if value == "" and _is_optional_type(arg_type):
+        return None
+
+    if isinstance(value, str) and value.strip():
+        if arg_type in (list, dict) or (
+            hasattr(arg_type, "__origin__") and arg_type.__origin__ in (list, dict)
+        ):
+            try:
+                parsed = json.loads(value)
+                if arg_type is list and isinstance(parsed, list):
+                    return parsed
+                if arg_type is dict and isinstance(parsed, dict):
+                    return parsed
+                if hasattr(arg_type, "__origin__"):
+                    if arg_type.__origin__ is list and isinstance(parsed, list):
+                        return parsed
+                    if arg_type.__origin__ is dict and isinstance(parsed, dict):
+                        return parsed
+            except (json.JSONDecodeError, TypeError):
+                pass
+
+    if isinstance(arg_type, types.UnionType):
+        union_args = get_args(arg_type)
+        non_none_types = [t for t in union_args if t is not type(None)]
+
+        if len(non_none_types) == 1:
+            return safe_cast_argument(value, non_none_types[0])
+
+        for cast_type in non_none_types:
+            try:
+                result = safe_cast_argument(value, cast_type)
+                if result != value:
+                    return result
+            except (ValueError, TypeError):
+                continue
+        return value
+
+    if get_origin(arg_type) is Union:
+        union_args = get_args(arg_type)
+        non_none_types = [t for t in union_args if t is not type(None)]
+
+        if len(non_none_types) == 1:
+            return safe_cast_argument(value, non_none_types[0])
+
+        for cast_type in non_none_types:
+            try:
+                result = safe_cast_argument(value, cast_type)
+                if result != value:
+                    return result
+            except (ValueError, TypeError):
+                continue
+        return value
+
+    if arg_type is bool and isinstance(value, str):
+        lower_value = value.lower().strip()
+        if lower_value in ("true", "1", "yes"):
+            return True
+        if lower_value in ("false", "0"):
+            return False
+        logger.warning("Unexpected boolean string value: %s", value)
+        return bool(value)
+
+    if arg_type in (list, dict):
+        logger.warning("Failed to parse JSON string for type %s: %s", arg_type, value)
+        return value
+
+    if hasattr(arg_type, "__origin__") and arg_type.__origin__ in (list, dict):
+        logger.warning("Failed to parse JSON string for type %s: %s", arg_type, value)
+        return value
+
+    try:
+        return arg_type(value)
+    except (ValueError, TypeError):
+        logger.warning("Failed to cast value %s to type %s", value, arg_type)
+        return value

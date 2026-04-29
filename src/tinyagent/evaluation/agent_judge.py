@@ -1,0 +1,103 @@
+import builtins
+from collections.abc import Callable
+from typing import Any
+
+from any_llm.utils.aio import run_async_in_sync
+from pydantic import BaseModel
+
+from tinyagent import AgentConfig, TinyAgent
+from tinyagent.evaluation.schemas import EvaluationOutput
+from tinyagent.evaluation.tools import TraceTools
+from tinyagent.tracing.agent_trace import AgentTrace
+
+INSIDE_NOTEBOOK = hasattr(builtins, "__IPYTHON__")
+
+AGENT_INSTRUCTIONS = """
+You are a helpful assistant that will be used to evaluate the correctness of an agent trace.
+Given a specific question regarding the quality of something about the agent,
+you may utilize tools as needed in order to check if the trace satisfies the question.
+
+Whenever you have all the information needed, you must use the `final_answer` tool
+to answer with:
+
+1. "passed": true or false (true if the trace satisfies the question, false otherwise)
+2. "reasoning": Brief explanation for your decision (2-3 sentences max)"""
+
+
+class AgentJudge:
+    """An agent that evaluates the correctness of another agent's trace."""
+
+    def __init__(
+        self,
+        model_id: str,
+        output_type: type[BaseModel] = EvaluationOutput,
+        model_args: dict[str, Any] | None = None,
+    ):
+        self.model_id = model_id
+        self.model_args = model_args
+        self.output_type = output_type
+
+    def run(
+        self,
+        trace: AgentTrace,
+        question: str,
+        additional_tools: list[Callable[[], Any]] | None = None,
+    ) -> AgentTrace:
+        """Run the agent judge.
+
+        Args:
+            trace: The agent trace to evaluate
+            question: The question to ask the agent
+            additional_tools: Additional tools to use for the agent
+
+        Returns:
+            The trace of the evaluation run.
+            You can access the evaluation result in the `final_output`
+            property.
+
+        """
+        if additional_tools is None:
+            additional_tools = []
+        return run_async_in_sync(
+            self.run_async(trace, question, additional_tools),
+            allow_running_loop=INSIDE_NOTEBOOK,
+        )
+
+    async def run_async(
+        self,
+        trace: AgentTrace,
+        question: str,
+        additional_tools: list[Callable[[], Any]] | None = None,
+    ) -> AgentTrace:
+        """Run the agent judge asynchronously.
+
+        Args:
+            trace: The agent trace to evaluate
+            question: The question to ask the agent
+            additional_tools: Additional tools to use for the agent
+        Returns:
+            The trace of the evaluation run.
+            You can access the evaluation result in the `final_output`
+            property.
+
+        """
+        if additional_tools is None:
+            additional_tools = []
+        tooling = TraceTools(trace)
+
+        agent_config = AgentConfig(
+            model_id=self.model_id,
+            instructions=AGENT_INSTRUCTIONS.format(
+                response_schema=self.output_type.model_json_schema()
+            ),
+            tools=tooling.get_all_tools() + additional_tools,
+            output_type=self.output_type,
+            model_args=self.model_args,
+        )
+
+        agent = await TinyAgent.create_async(agent_config=agent_config)
+        agent_trace = await agent.run_async(question)
+        if not isinstance(agent_trace.final_output, self.output_type):
+            msg = f"Agent output is not an {self.output_type} instance."
+            raise ValueError(msg)
+        return agent_trace
