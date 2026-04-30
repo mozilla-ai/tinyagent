@@ -1,0 +1,47 @@
+name: Sync docs to gitbook-docs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - '.gitbook.yaml'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Sync docs to gitbook-docs branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          cp -r docs /tmp/docs
+          cp .gitbook.yaml /tmp/.gitbook.yaml
+
+          if git ls-remote --exit-code --heads origin gitbook-docs; then
+            git checkout gitbook-docs
+          else
+            git checkout --orphan gitbook-docs
+            git rm -rf . --quiet || true
+          fi
+
+          rm -rf docs .gitbook.yaml
+          cp -r /tmp/docs .
+          cp /tmp/.gitbook.yaml .
+
+          git add docs/ .gitbook.yaml
+          if git diff --cached --quiet; then
+            echo "No changes to sync."
+            exit 0
+          fi
+          git commit -m "sync: update docs from main"
+          git push origin gitbook-docs
