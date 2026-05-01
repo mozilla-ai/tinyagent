@@ -6,7 +6,7 @@ Model configuration in `tinyagent` is designed to be consistent across all suppo
 
 ## Configuration Parameters
 
-The model configuration is defined through several parameters in [AgentConfig](../api/config.md):
+The model configuration is defined through several parameters in [AgentConfig](https://github.com/mozilla-ai/tinyagent/blob/main/src/tinyagent/config.py):
 
 The `model_id` parameter selects which language model your agent will use. The format depends on the provider.
 

@@ -8,7 +8,7 @@
 
 ## Configuring and Serving Agents
 
-You can configure and serve an agent using the [A2AServingConfig](api/config.md) or [MCPServingConfig](api/config.md) and the `TinyAgent.serve_async` method.
+You can configure and serve an agent using the [A2AServingConfig](https://github.com/mozilla-ai/tinyagent/blob/main/src/tinyagent/config.py) or [MCPServingConfig](https://github.com/mozilla-ai/tinyagent/blob/main/src/tinyagent/config.py) and the `TinyAgent.serve_async` method.
 
 For illustrative purposes, we are going to define 2 separate scripts, each defining an agent to answer questions about a specific agent framework (either Google ADK or OpenAI Agents SDK):
 
@@ -113,7 +113,7 @@ of each protocol:
 - [A2A Client](https://a2a-protocol.org/latest/tutorials/python/6-interact-with-server/#understanding-the-client-code)
 - [MCP Client](https://modelcontextprotocol.io/quickstart/client)
 
-Alternatively, as described in [Using Agents-As-Tools](agents/tools.md#using-agents-as-tools), we can run another python script containing the main agent that can use the served agents:
+Alternatively, as described in [Using Agents-As-Tools](tools.md#using-agents-as-tools), we can run another python script containing the main agent that can use the served agents:
 
 ```python
 import asyncio
@@ -149,4 +149,3 @@ if __name__ == "__main__":
 Check out our cookbook example for building and serving an agent via A2A:
 
 - [Serve an Agent with A2A](cookbook/serve-a2a.md)
-- [Use an A2A Agent as a tool](cookbook/a2a-as-tool.md)

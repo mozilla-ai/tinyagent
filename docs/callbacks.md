@@ -4,7 +4,7 @@ Callbacks provide hooks into the lifecycle of an `TinyAgent` execution. Using ca
 
 ## Implementing Callbacks
 
-All callbacks must inherit from the base [Callback](../api/callbacks.md) class and can choose to implement any subset of the available callback methods. These methods include:
+All callbacks must inherit from the base [Callback](https://github.com/mozilla-ai/tinyagent/blob/main/src/tinyagent/callbacks/base.py) class and can choose to implement any subset of the available callback methods. These methods include:
 
 | Callback Method | When It Fires | Example Use Cases |
 |:----------------:|:------------:|:----------------|
@@ -23,7 +23,7 @@ def before_llm_call(self, context: Context, *args, **kwargs) -> Context:
 
 ## Managing State (`Context`)
 
-During an agent run (`agent.run_async` or `agent.run`), a unique [Context](../api/callbacks.md) object is created and shared across all callbacks.
+During an agent run (`agent.run_async` or `agent.run`), a unique [Context](https://github.com/mozilla-ai/tinyagent/blob/main/src/tinyagent/callbacks/context.py) object is created and shared across all callbacks.
 
 Use `Context.shared` (a dictionary) to persist data across different steps and callbacks.
 
@@ -31,7 +31,7 @@ Use `Context.shared` (a dictionary) to persist data across different steps and c
 
 `tinyagent` populates the `Context.current_span` property so that callbacks can access information in a framework-agnostic way.
 
-You can see what attributes are available for LLM Calls and Tool Executions by examining the [GenAI](../api/tracing.md) class.
+You can see what attributes are available for LLM Calls and Tool Executions by examining the [GenAI](https://github.com/mozilla-ai/tinyagent/blob/main/src/tinyagent/tracing/attributes.py) class.
 
 **Common Pattern**: Initialize a counter in one callback and check it in another.
 
@@ -59,7 +59,7 @@ Raising any exception from a callback immediately halts the agent loop. Use this
 
 ### Using `AgentCancel` (Recommended)
 
-For intentional cancellation (rate limits, guardrails, validation), subclass [AgentCancel](../api/agent.md). These exceptions propagate directly to your code, allowing you to catch them by their specific type:
+For intentional cancellation (rate limits, guardrails, validation), subclass [AgentCancel](https://github.com/mozilla-ai/tinyagent/blob/main/src/tinyagent/agent.py). These exceptions propagate directly to your code, allowing you to catch them by their specific type:
 
 ```python
 from tinyagent import AgentCancel, AgentConfig, TinyAgent
@@ -94,7 +94,7 @@ except SearchLimitReached as e:
 
 ### Using Regular Exceptions
 
-Regular exceptions (like `RuntimeError`) are automatically wrapped in [AgentRunError](../api/agent.md) by the framework, which provides access to the execution trace but requires you to inspect the wrapped exception:
+Regular exceptions (like `RuntimeError`) are automatically wrapped in [AgentRunError](https://github.com/mozilla-ai/tinyagent/blob/main/src/tinyagent/agent.py) by the framework, which provides access to the execution trace but requires you to inspect the wrapped exception:
 
 ```python
 from tinyagent import AgentConfig, AgentRunError, TinyAgent
@@ -204,7 +204,7 @@ Advanced designs such as safety guardrails or custom side-effects can be integra
 
 `tinyagent` comes with a set of default callbacks that will be used by default (if you don't pass a value to `AgentConfig.callbacks`):
 
-- [ConsolePrintSpan](../api/callbacks.md)
+- [ConsolePrintSpan](https://github.com/mozilla-ai/tinyagent/blob/main/src/tinyagent/callbacks/span_print.py)
 
 If you want to disable these default callbacks, you can pass an empty list:
 
@@ -228,7 +228,7 @@ Callbacks are provided to the agent using the `AgentConfig.callbacks` property.
 
 #### Extending default callbacks
 
-`tinyagent` includes default callbacks (like console logging). Use [get_default_callbacks](../api/callbacks.md) to keep them:
+`tinyagent` includes default callbacks (like console logging). Use [get_default_callbacks](https://github.com/mozilla-ai/tinyagent/blob/main/src/tinyagent/callbacks/__init__.py) to keep them:
 
 ```py
 from tinyagent import AgentConfig, TinyAgent

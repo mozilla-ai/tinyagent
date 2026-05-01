@@ -4,7 +4,7 @@ This cookbook shows you how to monitor, control, and secure your agents using ca
 We'll build three callbacks of increasing complexity: counting tool usage, enforcing
 rate limits, and protecting sensitive data.
 
-You can find more information about callbacks in the [docs](../agents/callbacks.md)
+You can find more information about callbacks in the [docs](../callbacks.md)
 
 ```python
 %pip install 'mozilla-ai-tinyagent' --quiet
@@ -46,7 +46,7 @@ from tinyagent.tools import search_web
 
 `tinyagent` comes with a default callback that will always be used unless you pass a value to `AgentConfig.callbacks`:
 
-- [`ConsolePrintSpan`](../api/callbacks.md)
+- [`ConsolePrintSpan`](../callbacks.md#default-callbacks)
 
 ```python
 agent = TinyAgent.create(
@@ -184,7 +184,7 @@ class SensitiveDataOffloader(Callback):
 
 We can now provide our callback to the agent.
 
-You can find more information in [our docs](../agents/callbacks.md#providing-your-own-callbacks).
+You can find more information in [our docs](../callbacks.md#registering-your-own-callbacks).
 
 ```python
 from tinyagent.callbacks import get_default_callbacks
