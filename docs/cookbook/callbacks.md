@@ -46,7 +46,7 @@ from tinyagent.tools import search_web
 
 `tinyagent` comes with a default callback that will always be used unless you pass a value to `AgentConfig.callbacks`:
 
-- [`ConsolePrintSpan`](../callbacks.md#default-callbacks)
+- [`ConsolePrintSpan`](../api/callbacks.md#consoleprintspan)
 
 ```python
 agent = TinyAgent.create(

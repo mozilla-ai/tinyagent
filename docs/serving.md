@@ -8,7 +8,7 @@
 
 ## Configuring and Serving Agents
 
-You can configure and serve an agent using the [A2AServingConfig](https://github.com/mozilla-ai/tinyagent/blob/main/src/tinyagent/config.py) or [MCPServingConfig](https://github.com/mozilla-ai/tinyagent/blob/main/src/tinyagent/config.py) and the `TinyAgent.serve_async` method.
+You can configure and serve an agent using the [A2AServingConfig](api/config.md#a2aservingconfig) or [MCPServingConfig](api/config.md#mcpservingconfig) and the `TinyAgent.serve_async` method.
 
 For illustrative purposes, we are going to define 2 separate scripts, each defining an agent to answer questions about a specific agent framework (either Google ADK or OpenAI Agents SDK):
 
