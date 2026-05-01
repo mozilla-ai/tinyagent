@@ -19,3 +19,13 @@
 * [Callbacks](cookbook/callbacks.md)
 * [Serve over A2A](cookbook/serve-a2a.md)
 * [Local LLM](cookbook/agent-with-local-llm.md)
+
+## API Reference
+
+* [Agent](api/agent.md)
+* [Config](api/config.md)
+* [Callbacks](api/callbacks.md)
+* [Tracing](api/tracing.md)
+* [Evaluation](api/evaluation.md)
+* [Tools](api/tools.md)
+* [Serving](api/serving.md)

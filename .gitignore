@@ -1,4 +1,5 @@
-# Cookbook generated files
+# Generated files
+docs/api/
 docs/cookbook/sensitive-info
 
 uv.lock
