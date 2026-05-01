@@ -17,7 +17,7 @@ Under the hood, `tinyagent` takes care of wrapping the
 tool so it becomes usable by the selected framework.
 
 {% hint style="success" %}
-Check all the [built-in callable tools](../api/tools.md) that tinyagent provides.
+Check all the [built-in callable tools](api/tools.md) that tinyagent provides.
 {% endhint %}
 
 ```python
@@ -130,7 +130,7 @@ main_agent = await TinyAgent.create_async(
 
 ## MCP
 
-MCP can either be run locally ([MCPStdio](../api/config.md)) or you can connect to an MCP that is running elsewhere (using either [MCPSse](../api/config.md) or [MCPStreamableHttp](../api/config.md)).
+MCP can either be run locally ([MCPStdio](api/config.md#mcpstdio)) or you can connect to an MCP that is running elsewhere (using either [MCPSse](api/config.md#mcpsse) or [MCPStreamableHttp](api/config.md#mcpstreamablehttp)).
 
 {% hint style="success" %}
 There are tools like [SuperGateway](https://github.com/supercorp-ai/supergateway) providing an easy way to turn a Stdio server into an SSE server.
@@ -142,7 +142,7 @@ The SSE remote transport has been deprecated as of [MCP specification version 20
 
 #### MCP (Stdio)
 
-See the [MCPStdio](../api/config.md) API Reference.
+See the [MCPStdio](api/config.md#mcpstdio) API Reference.
 
 ```python
 from tinyagent import AgentConfig
@@ -162,7 +162,7 @@ main_agent = AgentConfig(
 
 #### MCP (Streamable HTTP)
 
-See the [MCPStreamableHttp](../api/config.md) API Reference.
+See the [MCPStreamableHttp](api/config.md#mcpstreamablehttp) API Reference.
 
 ```python
 from tinyagent import AgentConfig
@@ -180,7 +180,7 @@ main_agent = AgentConfig(
 
 #### MCP (SSE)
 
-See the [MCPSse](../api/config.md) API Reference.
+See the [MCPSse](api/config.md#mcpsse) API Reference.
 
 ```python
 from tinyagent import AgentConfig

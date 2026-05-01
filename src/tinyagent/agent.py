@@ -521,7 +521,7 @@ class TinyAgent:
 
         if kwargs.pop("max_turns", None):
             logger.warning(
-                "`max_turns` is deprecated and has no effect. See https://docs.mozilla.ai/tinyagent/callbacks/#example-limit-the-number-of-steps"
+                "`max_turns` is deprecated and has no effect. See https://docs.mozilla.ai/tinyagent/guides/callbacks/#limit-the-number-of-steps"
             )
 
         while True:
