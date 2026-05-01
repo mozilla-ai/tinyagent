@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Generate API reference documentation from Python source code.
 
 Extracts docstrings and signatures from the tinyagent source and generates
@@ -482,7 +481,9 @@ def generate_agent_page() -> str:
         parts.append("")
     parts.append("**Properties:**")
     parts.append("")
-    parts.append("- `trace` - `AgentTrace`: The execution trace collected up to failure point.")
+    parts.append(
+        "- `trace` - `AgentTrace`: The execution trace collected up to failure point."
+    )
     parts.append(
         "- `original_exception` - `Exception`: The underlying exception that was caught."
     )
@@ -492,7 +493,13 @@ def generate_agent_page() -> str:
 
 
 def generate_config_page() -> str:
-    from tinyagent.config import AgentConfig, MCPSse, MCPStdio, MCPStreamableHttp, ServingConfig
+    from tinyagent.config import (
+        AgentConfig,
+        MCPSse,
+        MCPStdio,
+        MCPStreamableHttp,
+        ServingConfig,
+    )
 
     parts = [
         "---",
@@ -545,7 +552,9 @@ def generate_config_page() -> str:
         parts.append(parsed["summary"])
         parts.append("")
     else:
-        parts.append("Configuration for connecting to an MCP server via Streamable HTTP transport.")
+        parts.append(
+            "Configuration for connecting to an MCP server via Streamable HTTP transport."
+        )
         parts.append("")
     table = _pydantic_field_table(MCPStreamableHttp)
     if table:
@@ -564,7 +573,9 @@ def generate_config_page() -> str:
         parts.append(parsed["summary"])
         parts.append("")
     else:
-        parts.append("Configuration for connecting to an MCP server via SSE transport (deprecated).")
+        parts.append(
+            "Configuration for connecting to an MCP server via SSE transport (deprecated)."
+        )
         parts.append("")
     table = _pydantic_field_table(MCPSse)
     if table:
@@ -602,7 +613,9 @@ def generate_config_page() -> str:
             parts.append(parsed["summary"])
             parts.append("")
         else:
-            parts.append("Configuration for serving agents via the Agent2Agent Protocol.")
+            parts.append(
+                "Configuration for serving agents via the Agent2Agent Protocol."
+            )
             parts.append("")
         table = _pydantic_field_table(A2AServingConfig)
         if table:
@@ -620,7 +633,9 @@ def generate_config_page() -> str:
             parts.append(parsed["summary"])
             parts.append("")
         else:
-            parts.append("Configuration for serving agents via the Model Context Protocol.")
+            parts.append(
+                "Configuration for serving agents via the Model Context Protocol."
+            )
             parts.append("")
         table = _pydantic_field_table(MCPServingConfig)
         if table:
@@ -633,7 +648,9 @@ def generate_config_page() -> str:
         parts.append("")
         parts.append("## A2AServingConfig")
         parts.append("")
-        parts.append("Configuration for serving agents via A2A. Install `mozilla-ai-tinyagent[a2a]` for full docs.")
+        parts.append(
+            "Configuration for serving agents via A2A. Install `mozilla-ai-tinyagent[a2a]` for full docs."
+        )
         parts.append("")
         parts.append("## MCPServingConfig")
         parts.append("")
@@ -694,16 +711,22 @@ def generate_callbacks_page() -> str:
     if parsed["summary"]:
         parts.append(parsed["summary"])
         parts.append("")
-    parts.append("Shared context object passed through all callbacks during an agent run.")
+    parts.append(
+        "Shared context object passed through all callbacks during an agent run."
+    )
     parts.append("")
     parts.append("### Fields")
     parts.append("")
     parts.append("| Field | Type | Description |")
     parts.append("|-------|------|-------------|")
-    parts.append("| `current_span` | `Span` | The active OpenTelemetry span with attributes (see GenAI) |")
+    parts.append(
+        "| `current_span` | `Span` | The active OpenTelemetry span with attributes (see GenAI) |"
+    )
     parts.append("| `trace` | `AgentTrace` | Current execution trace |")
     parts.append("| `tracer` | `Tracer` | OpenTelemetry tracer instance |")
-    parts.append("| `shared` | `dict[str, Any]` | Arbitrary shared state across callbacks |")
+    parts.append(
+        "| `shared` | `dict[str, Any]` | Arbitrary shared state across callbacks |"
+    )
     parts.append("")
 
     # ConsolePrintSpan
@@ -713,12 +736,15 @@ def generate_callbacks_page() -> str:
     parts.append("")
     try:
         from tinyagent.callbacks.span_print import ConsolePrintSpan
+
         parsed = _parse_docstring(ConsolePrintSpan.__doc__)
         if parsed["summary"]:
             parts.append(parsed["summary"])
             parts.append("")
         else:
-            parts.append("Default callback that prints span information to the console.")
+            parts.append(
+                "Default callback that prints span information to the console."
+            )
             parts.append("")
     except ImportError:
         parts.append("Default callback that prints span information to the console.")
@@ -766,7 +792,9 @@ def generate_tracing_page() -> str:
     parts.append("- `duration` - `timedelta`: Duration of the agent invocation span.")
     parts.append("- `tokens` - `TokenInfo`: Total token usage across all LLM calls.")
     parts.append("- `cost` - `CostInfo`: Total cost across all LLM calls.")
-    parts.append("- `final_output` - `str | None`: The final answer returned by the agent.")
+    parts.append(
+        "- `final_output` - `str | None`: The final answer returned by the agent."
+    )
     parts.append("")
 
     # AgentSpan
@@ -827,7 +855,9 @@ def generate_tracing_page() -> str:
     if table:
         parts.append(table)
         parts.append("")
-    parts.append("**Properties:** `total_tokens` - `int`: Total tokens (input + output).")
+    parts.append(
+        "**Properties:** `total_tokens` - `int`: Total tokens (input + output)."
+    )
     parts.append("")
 
     # GenAI
@@ -1025,7 +1055,9 @@ def generate_serving_page() -> str:
     except ImportError:
         parts.append("## ServerHandle")
         parts.append("")
-        parts.append("Lifecycle management for async servers. Install the full package for complete docs.")
+        parts.append(
+            "Lifecycle management for async servers. Install the full package for complete docs."
+        )
         parts.append("")
 
     return "\n".join(parts)
