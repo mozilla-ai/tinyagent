@@ -49,7 +49,7 @@ Here is what the console output looks like:
 {% hint style="success" %}
 The spans are printed to the console by default, using the `callback` mechanism.
 
-See [Default Callbacks](agents/callbacks.md#default-callbacks) for more information
+See [Default Callbacks](callbacks.md#default-callbacks) for more information
 and how to disable this behavior.
 {% endhint %}
 
@@ -94,7 +94,6 @@ from tinyagent import AgentConfig, TinyAgent
 from tinyagent.tools import search_web
 
 agent = TinyAgent.create(
-    "openai",
     agent_config=AgentConfig(
             model_id="mistral:mistral-small-latest",
             tools=[search_web],

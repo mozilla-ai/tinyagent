@@ -2,7 +2,7 @@
 
 `tinyagent` provides a simple way of serving agents from any of the supported frameworks using different protocols:
 
-- [Agent2Agent Protocol (A2A)](https://google.github.io/A2A/), via the [A2A Python SDK](https://github.com/google-a2a/a2a-python). In order to this protocol, you must install the 'a2a' extra: `pip install 'tinyagent[a2a]'`.
+- [Agent2Agent Protocol (A2A)](https://google.github.io/A2A/), via the [A2A Python SDK](https://github.com/google-a2a/a2a-python). In order to use this protocol, you must install the 'a2a' extra: `pip install 'tinyagent[a2a]'`.
 
 - [Model Context Protocol (MCP)](https://modelcontextprotocol.io/specification/2025-03-26), via the [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk).
 
@@ -29,7 +29,6 @@ from tinyagent.tools import search_web
 
 async def serve_agent(protocol):
     agent = await TinyAgent.create_async(
-        "google",
         AgentConfig(
             name="google_expert",
             model_id="mistral:mistral-small-latest",
@@ -68,7 +67,6 @@ from tinyagent.tools import search_web
 
 async def serve_agent(protocol):
     agent = await TinyAgent.create_async(
-        "openai",
         AgentConfig(
             name="openai_expert",
             model_id="mistral:mistral-small-latest",
@@ -107,8 +105,7 @@ python openai_expert.py a2a  ## or mcp
 
 ## Using the served agents
 
-Once the agents are being served using the chosen protocol, you can directly use them using the official clients
-of each protocol:
+Once the agents are being served using the chosen protocol, you can directly use them using the official clients of each protocol:
 
 - [A2A Client](https://a2a-protocol.org/latest/tutorials/python/6-interact-with-server/#understanding-the-client-code)
 - [MCP Client](https://modelcontextprotocol.io/quickstart/client)
