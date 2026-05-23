@@ -66,7 +66,6 @@ from tinyagent import AgentConfig, TinyAgent
 from tinyagent.tools import search_web
 
 google_agent = await TinyAgent.create_async(
-    "google",
     AgentConfig(
         name="google_expert",
         model_id="mistral:mistral-small-latest",
