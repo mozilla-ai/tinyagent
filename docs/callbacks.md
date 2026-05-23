@@ -81,7 +81,7 @@ class LimitSearchWeb(Callback):
 # In your application code:
 agent = TinyAgent.create(
     AgentConfig(
-        model_id="gpt-4.1-nano",
+        model_id="openai:gpt-4.1-nano",
         callbacks=[LimitSearchWeb(max_calls=3)],
     ),
 )
@@ -114,7 +114,7 @@ class LimitSearchWeb(Callback):
 # In your application code:
 agent = TinyAgent.create(
     AgentConfig(
-        model_id="gpt-4.1-nano",
+        model_id="openai:gpt-4.1-nano",
         callbacks=[LimitSearchWeb(max_calls=3)],
     ),
 )
@@ -237,7 +237,7 @@ from tinyagent.tools import search_web, visit_webpage
 
 agent = TinyAgent.create(
     AgentConfig(
-        model_id="gpt-4.1-nano",
+        model_id="openai:gpt-4.1-nano",
         instructions="Use the tools to find an answer",
         tools=[search_web, visit_webpage],
         callbacks=[
@@ -259,7 +259,7 @@ from tinyagent.tools import search_web, visit_webpage
 
 agent = TinyAgent.create(
     AgentConfig(
-        model_id="gpt-4.1-nano",
+        model_id="openai:gpt-4.1-nano",
         instructions="Use the tools to find an answer",
         tools=[search_web, visit_webpage],
         callbacks=[
