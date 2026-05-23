@@ -58,7 +58,6 @@ time_tool = MCPStdio(
 )
 
 time = await TinyAgent.create_async(
-
     AgentConfig(
         model_id="mistral:mistral-small-latest",
         description="I'm an agent to help with getting the time",
