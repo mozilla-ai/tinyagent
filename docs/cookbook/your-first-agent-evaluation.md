@@ -46,7 +46,6 @@ from tinyagent import AgentConfig, TinyAgent
 from tinyagent.tools import search_web, visit_webpage
 
 agent = TinyAgent.create(
-
     AgentConfig(
         model_id="mistral:mistral-small-latest", tools=[search_web, visit_webpage]
     ),

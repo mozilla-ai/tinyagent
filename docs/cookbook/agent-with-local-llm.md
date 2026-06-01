@@ -29,7 +29,7 @@ nest_asyncio.apply()
 
 Regardless of which agent framework you choose in tinyagent, all of them support any-llm, which is a proxy that
 allows us to use whichever LLM inside the framework, hosted on by any provider. For example,
-we could use a local model via llama.cpp or [llamafile](https://github.com/Mozilla-Ocho/llamafile), a
+we could use a local model via llama.cpp or [llamafile](https://github.com/mozilla-ai/llamafile), a
 google hosted gemini model, or a AWS bedrock hosted Llama model. For this example,
 we will use [Ollama](https://ollama.com/) to run our LLM locally!
 

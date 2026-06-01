@@ -103,7 +103,6 @@ def send_message(message: str) -> str:
 print("Start creating agent")
 try:
     agent = await TinyAgent.create_async(
-
         AgentConfig(
             model_id="mistral:mistral-large-latest",
             tools=[time_tool, airbnb_tool, send_message],
