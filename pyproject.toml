@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "mozilla-ai-tinyagent"
 readme = "README.md"
 license = {text = "Apache-2.0"}
-requires-python = ">=3.11,<3.14"
+requires-python = ">=3.11,<3.15"
 dynamic = ["version"]
 description = "A minimal agent framework with first-class tracing, callbacks, MCP, and serving support."
 dependencies = [
