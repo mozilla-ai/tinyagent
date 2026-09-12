@@ -13,7 +13,7 @@ Note: because this tutorial relies upon advanced stdio/stderr communication usin
 tinyagent uses the python asyncio module to support async functionality. When running in Jupyter notebooks, this means we need to enable the use of nested event loops. We'll install tinyagent and enable this below using nest_asyncio.
 
 ```python
-%pip install 'tinyagent[a2a]' 'mcp-server-time' --quiet
+%pip install 'mozilla-ai-tinyagent[a2a]' 'mcp-server-time' --quiet
 
 import nest_asyncio
 

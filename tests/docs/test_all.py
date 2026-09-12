@@ -14,6 +14,13 @@ from mktestdocs import check_md_file
 DOCS_DIR = pathlib.Path("docs")
 
 
+def test_install_commands_use_distribution_name() -> None:
+    for fpath in DOCS_DIR.glob("**/*"):
+        if fpath.suffix not in {".ipynb", ".md"}:
+            continue
+        assert "pip install 'tinyagent[" not in fpath.read_text(encoding="utf-8")
+
+
 @pytest.mark.parametrize(
     "fpath",
     [
