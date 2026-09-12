@@ -2,7 +2,7 @@
 
 `tinyagent` provides a simple way of serving agents from any of the supported frameworks using different protocols:
 
-- [Agent2Agent Protocol (A2A)](https://google.github.io/A2A/), via the [A2A Python SDK](https://github.com/google-a2a/a2a-python). In order to this protocol, you must install the 'a2a' extra: `pip install 'tinyagent[a2a]'`.
+- [Agent2Agent Protocol (A2A)](https://google.github.io/A2A/), via the [A2A Python SDK](https://github.com/google-a2a/a2a-python). In order to this protocol, you must install the 'a2a' extra: `pip install 'mozilla-ai-tinyagent[a2a]'`.
 
 - [Model Context Protocol (MCP)](https://modelcontextprotocol.io/specification/2025-03-26), via the [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk).
 
