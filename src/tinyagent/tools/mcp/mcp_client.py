@@ -25,7 +25,15 @@ try:
     from mcp.client.streamable_http import streamablehttp_client
     from mcp.types import Tool as MCPTool
 except ImportError as e:
+    # Keep class body evaluable when mcp is missing or incompatible (e.g. mcp>=2
+    # renamed streamablehttp_client). model_post_init raises a real ImportError.
     missing_mcp_error = e
+    ClientSession = Any  # type: ignore[misc,assignment]
+    StdioServerParameters = Any  # type: ignore[misc,assignment]
+    MCPTool = Any  # type: ignore[misc,assignment]
+    sse_client = None  # type: ignore[assignment]
+    stdio_client = None  # type: ignore[assignment]
+    streamablehttp_client = None  # type: ignore[assignment]
 
 
 class MCPClient(BaseModel):
