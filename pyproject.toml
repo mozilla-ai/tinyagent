@@ -11,7 +11,7 @@ dynamic = ["version"]
 description = "A minimal agent framework with first-class tracing, callbacks, MCP, and serving support."
 dependencies = [
   "any-llm-sdk>=1.0,<2",
-  "mcp>=1.5.0",
+  "mcp>=1.5.0,<2",
   "opentelemetry-sdk",
   "pydantic",
   "requests",

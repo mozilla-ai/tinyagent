@@ -1,4 +1,5 @@
 import inspect
+from pathlib import Path
 from typing import Optional
 from unittest.mock import AsyncMock
 
@@ -111,3 +112,68 @@ async def test_create_tool_function_with_complex_schema() -> None:
     client._session = None
     error_result = await tool_func(query="test", max_results=1, include_metadata=True)
     assert "Error: MCP session not available" in error_result
+
+
+def test_mcp_client_import_failure_raises_import_error(monkeypatch) -> None:
+    """Failed mcp import must raise ImportError from MCPClient, not NameError (#22)."""
+    import importlib.util
+    import sys
+    import types
+
+    # Build a fake mcp package where streamablehttp_client is missing (mcp>=2 shape).
+    fake_mcp = types.ModuleType("mcp")
+    fake_client = types.ModuleType("mcp.client")
+    fake_sse = types.ModuleType("mcp.client.sse")
+    fake_stdio = types.ModuleType("mcp.client.stdio")
+    fake_http = types.ModuleType("mcp.client.streamable_http")
+    fake_types = types.ModuleType("mcp.types")
+
+    fake_sse.sse_client = object()
+    fake_stdio.stdio_client = object()
+    # Intentionally omit streamablehttp_client so the real import fails.
+
+    class _ClientSession:
+        pass
+
+    class _StdioServerParameters:
+        pass
+
+    class _Tool:
+        pass
+
+    fake_mcp.ClientSession = _ClientSession
+    fake_mcp.StdioServerParameters = _StdioServerParameters
+    fake_types.Tool = _Tool
+
+    modules = {
+        "mcp": fake_mcp,
+        "mcp.client": fake_client,
+        "mcp.client.sse": fake_sse,
+        "mcp.client.stdio": fake_stdio,
+        "mcp.client.streamable_http": fake_http,
+        "mcp.types": fake_types,
+    }
+    for name, mod in modules.items():
+        monkeypatch.setitem(sys.modules, name, mod)
+
+    src = Path(__file__).resolve().parents[4] / "src/tinyagent/tools/mcp/mcp_client.py"
+    # When running from a checkout the path above works; fall back to package file.
+    if not src.is_file():
+        import tinyagent.tools.mcp.mcp_client as installed
+
+        src = Path(installed.__file__)
+
+    spec = importlib.util.spec_from_file_location(
+        "tinyagent_mcp_client_import_guard_test",
+        src,
+    )
+    assert spec is not None and spec.loader is not None
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    assert mod.missing_mcp_error is not None
+
+    config = MCPStdio(command="test", args=[])
+    with pytest.raises(ImportError, match="MCP support requires") as exc_info:
+        mod.MCPClient(config=config)
+    assert exc_info.value.__cause__ is mod.missing_mcp_error
