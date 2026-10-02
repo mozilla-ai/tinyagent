@@ -397,7 +397,9 @@ class TinyAgent:
                 ``[{"role": "user", "content": "hello"}]``) following the
                 OpenAI chat-completion message format. When a list is provided
                 it is forwarded directly to the underlying LLM, giving callers
-                full control over the conversation structure.
+                full control over the conversation structure. Generated messages
+                are appended to the agent's own list, leaving the supplied list
+                unchanged.
 
             kwargs: Will be passed to the underlying runner.
 
@@ -506,7 +508,7 @@ class TinyAgent:
                 self.completion_params["response_format"] = self.config.output_type
 
         if isinstance(prompt, list):
-            messages = prompt
+            messages = prompt.copy()
         else:
             messages = [
                 {
