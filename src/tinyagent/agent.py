@@ -500,6 +500,7 @@ class TinyAgent:
     async def _run_async(
         self, prompt: str | list[dict[str, Any]], **kwargs: Any
     ) -> str | BaseModel:
+        """Run the model loop, returning invalid tool arguments as tool feedback."""
         if self.uses_openai:
             self.completion_params["tool_choice"] = "auto"
             if self.config.output_type:
@@ -553,9 +554,21 @@ class TinyAgent:
                         messages.append(tool_message)
                         continue
 
-                    tool_args = {}
-                    if f.arguments:
-                        tool_args = json.loads(f.arguments)
+                    try:
+                        tool_args = json.loads(f.arguments) if f.arguments else {}
+                    except json.JSONDecodeError as e:
+                        tool_message["content"] = (
+                            f"Error calling tool: Arguments must be a valid JSON object ({e})."
+                        )
+                        messages.append(tool_message)
+                        continue
+
+                    if not isinstance(tool_args, dict):
+                        tool_message["content"] = (
+                            "Error calling tool: Arguments must be a JSON object."
+                        )
+                        messages.append(tool_message)
+                        continue
 
                     client = self.clients[tool_name]
 

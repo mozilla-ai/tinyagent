@@ -8,6 +8,12 @@ Multi-agent can be implemented [using Agents-As-Tools](#using-agents-as-tools).
 
 You can use any combination of options within the same agent.
 
+If a model sends invalid JSON or a value other than a JSON object as tool
+arguments, the agent returns an error in the tool response without executing
+that call. The model can correct the arguments in a later turn, and other tool
+calls in the same response can still run. An empty argument string is treated
+as an empty object for tools that take no arguments.
+
 ## Callables
 
 Any Python callable can be directly passed as tools.
